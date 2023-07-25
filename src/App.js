@@ -1,25 +1,28 @@
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 // routes
 import Router from './routes';
 // theme
 import ThemeProvider from './theme';
-// components
 import { StyledChart } from './components/chart';
 import ScrollToTop from './components/scroll-to-top';
 
 // ----------------------------------------------------------------------
 
 export default function App() {
-  return (
-    <HelmetProvider>
-      <BrowserRouter>
-        <ThemeProvider>
-          <ScrollToTop />
-          <StyledChart />
-          <Router />
-        </ThemeProvider>
-      </BrowserRouter>
-    </HelmetProvider>
-  );
+
+   if (!sessionStorage.getItem('token')) {
+      <Navigate to="/auth/login" />
+   }
+   return (
+      <HelmetProvider>
+         <BrowserRouter>
+            <ThemeProvider>
+               <ScrollToTop />
+               <StyledChart />
+               <Router />
+            </ThemeProvider>
+         </BrowserRouter>
+      </HelmetProvider>
+   );
 }
