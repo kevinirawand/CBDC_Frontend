@@ -1,5 +1,5 @@
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-// import PropTypes from 'prop-types';
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import Iconify from '../../../components/iconify';
@@ -7,8 +7,6 @@ import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 async function loginUser(credentials) {
-   console.info(credentials.email)
-   console.info(credentials.password)
    const response = await fetch('http://localhost:1337/api/v1/auth/login', {
       method: 'POST',
       headers: {
@@ -24,12 +22,24 @@ async function loginUser(credentials) {
 }
 
 export default function LoginForm() {
+   const navigate = useNavigate();
    const [showPassword, setShowPassword] = useState(false);
    const [emailError, setEmailError] = useState()
    const [passwordError, setPasswordError] = useState()
 
    const [email, setEmail] = useState();
    const [password, setPassword] = useState();
+   const getToken = () => {
+      const tokenString = sessionStorage.getItem('token')
+      const userToken = JSON.parse(tokenString)
+      return userToken?.token
+   }
+
+   const [token, setToken] = useState()
+   const saveToken = userToken => {
+      sessionStorage.setItem('token', userToken)
+      setToken(userToken)
+   }
 
    const handleSubmit = async e => {
       e.preventDefault();
@@ -38,9 +48,7 @@ export default function LoginForm() {
          password
       });
 
-
-      if (response.errors) {
-         // console.info(response.error)
+      if (response.code !== 200) {
          if (response.errors.email) {
             setEmailError(response.errors.email)
          }
@@ -48,10 +56,11 @@ export default function LoginForm() {
          if (response.errors.password) {
             setPasswordError(response.errors.password)
          }
+      } else {
+         saveToken(response.data.accessToken)
+         sessionStorage.setItem('userId', response.data.user_id)
+         navigate('/dashboard/app');
       }
-
-      console.info(emailError)
-      console.info(passwordError)
    }
 
    return (

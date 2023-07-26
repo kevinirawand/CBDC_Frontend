@@ -26,7 +26,7 @@ export default function Router() {
          element: <DashboardLayout />,
          children: [
             { element: <Navigate to="/dashboard/app" /> },
-            { path: 'app', element: <DashboardAppPage /> },
+            { path: 'app', element: <DashboardAppPage />, index: true },
             { path: 'user', element: <UserPage /> },
             { path: 'products', element: <ProductsPage /> },
             { path: 'blog', element: <BlogPage /> },
