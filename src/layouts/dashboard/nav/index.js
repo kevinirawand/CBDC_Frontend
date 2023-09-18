@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
@@ -15,6 +15,7 @@ import NavSection from '../../../components/nav-section';
 //
 import centralBankConfig from './centralBankConfig'
 import intermediariesConfig from './intermediariesConfig';
+import forbiddenConfig from './forbiddenConfig';
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
@@ -34,19 +35,38 @@ Nav.propTypes = {
    onCloseNav: PropTypes.func,
 };
 
-export default function Nav({ openNav, onCloseNav, user }) {
-   console.info(user)
+export default function Nav({ openNav, onCloseNav }) {
    const { pathname } = useLocation();
+   const [user, setUser] = useState([]);
 
    const isDesktop = useResponsive('up', 'lg');
+
+   useEffect(() => {
+      handleUser()
+   }, [])
 
    useEffect(() => {
       if (openNav) {
          onCloseNav();
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [pathname]);
 
+
+   const handleUser = async () => {
+      const token = sessionStorage.getItem('token')
+      const userId = sessionStorage.getItem('userId')
+
+      const response = await fetch(`http://localhost:1337/api/v1/user/${userId}`, {
+         method: 'GET',
+         headers: {
+            'Content-Type': 'application/json',
+            'X-Auth': `Bearer ${token}`
+         }
+      })
+
+      const userJson = await response.json();
+      setUser(userJson)
+   }
 
 
    const renderContent = (
@@ -64,48 +84,24 @@ export default function Nav({ openNav, onCloseNav, user }) {
             <Link underline="none">
                <StyledAccount>
 
-                  <img width="50" src={`/assets/images/avatars/${user.data.profile_picture}`} alt="photoURL" />
+                  <img width="50" src={`http://localhost:1337/static/images/profile/${user?.data?.profilePicture}`} alt="photoURL" />
 
                   <Box sx={{ ml: 2 }}>
                      <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                        {user.data.nama}
+                        {user?.data?.name}
                      </Typography>
 
                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        {user.data.role}
+                        {user?.data?.role}
                      </Typography>
                   </Box>
                </StyledAccount>
             </Link>
          </Box>
 
-         <NavSection data={user.data.role === 'Intermediaries' ? intermediariesConfig : centralBankConfig} />
+         <NavSection data={user?.data?.role === 'Intermediaries' ? intermediariesConfig : user?.data?.role === 'Central Bank' ? centralBankConfig : forbiddenConfig} />
+         {/* <NavSection data={intermediariesConfig} /> */}
 
-         <Box sx={{ flexGrow: 1 }} />
-
-         <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-            <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-               <Box
-                  component="img"
-                  src="/assets/illustrations/illustration_avatar.png"
-                  sx={{ width: 100, position: 'absolute', top: -50 }}
-               />
-
-               <Box sx={{ textAlign: 'center' }}>
-                  <Typography gutterBottom variant="h6">
-                     Get more?
-                  </Typography>
-
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                     From only $69
-                  </Typography>
-               </Box>
-
-               <Button href="https://material-ui.com/store/items/minimal-dashboard/" target="_blank" variant="contained">
-                  Upgrade to Pro
-               </Button>
-            </Stack>
-         </Box>
       </Scrollbar>
    );
 

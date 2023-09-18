@@ -18,7 +18,9 @@ async function loginUser(credentials) {
       })
    });
 
-   return response.json();
+   // console.info(response.json())
+
+   return await response.json();
 }
 
 export default function LoginForm() {
@@ -29,17 +31,6 @@ export default function LoginForm() {
 
    const [email, setEmail] = useState();
    const [password, setPassword] = useState();
-   const getToken = () => {
-      const tokenString = sessionStorage.getItem('token')
-      const userToken = JSON.parse(tokenString)
-      return userToken?.token
-   }
-
-   const [token, setToken] = useState()
-   const saveToken = userToken => {
-      sessionStorage.setItem('token', userToken)
-      setToken(userToken)
-   }
 
    const handleSubmit = async e => {
       e.preventDefault();
@@ -57,11 +48,21 @@ export default function LoginForm() {
             setPasswordError(response.errors.password)
          }
       } else {
-         saveToken(response.data.accessToken)
-         sessionStorage.setItem('userId', response.data.user_id)
-         navigate('/dashboard/app');
+         sessionStorage.setItem('token', response.data.accessToken)
+         sessionStorage.setItem('userId', response.data.userId)
+         sessionStorage.setItem('role', response.data.role)
+
+         if (response.data.role === 'Central Bank') {
+            navigate('/central-bank/dashboard');
+         } else if (response.data.role === 'Intermediaries') {
+            navigate('/intermediaries/dashboard');
+         } else {
+            navigate('/404');
+         }
       }
    }
+
+
 
    return (
       <form onSubmit={handleSubmit}>
@@ -89,7 +90,7 @@ export default function LoginForm() {
 
          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
             <Checkbox name="remember" label="Remember me" />
-            <Link variant="subtitle2" underline="hover">
+            <Link href="#" variant="subtitle2" underline="hover">
                Forgot password?
             </Link>
          </Stack>

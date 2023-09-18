@@ -8,7 +8,7 @@ import useResponsive from '../hooks/useResponsive';
 import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
-import { LoginForm } from '../sections/auth/login';
+import { RegisterForm } from '../sections/auth/register';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() {
+export default function RegisterPage() {
    const mdUp = useResponsive('up', 'md');
 
    return (
@@ -70,12 +70,12 @@ export default function LoginPage() {
             <Container maxWidth="sm">
                <StyledContent>
                   <Typography variant="h4" gutterBottom>
-                     Sign in to CBDC ITB
+                     Register to CBDC ITB
                   </Typography>
 
                   <Typography variant="body2" sx={{ mb: 5 }}>
-                     Don’t have an account? {''}
-                     <Link variant="subtitle2" href="/auth/register">Get started</Link>
+                     Have an account? {''}
+                     <Link variant="subtitle2" href="/auth/login">Login</Link>
                   </Typography>
 
                   <Stack direction="row" spacing={2}>
@@ -98,7 +98,7 @@ export default function LoginPage() {
                      </Typography>
                   </Divider>
 
-                  <LoginForm />
+                  <RegisterForm />
                </StyledContent>
             </Container>
          </StyledRoot>

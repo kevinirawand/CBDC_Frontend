@@ -34,34 +34,13 @@ const Main = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
    const [open, setOpen] = useState(false);
-   const [user, setUser] = useState([]);
-
-   useEffect(() => {
-      handleUser()
-   }, [])
-
-   const handleUser = async () => {
-      const token = sessionStorage.getItem('token')
-      const userId = sessionStorage.getItem('userId')
-
-      const response = await fetch(`http://localhost:1337/api/v1/user/${userId}`, {
-         method: 'GET',
-         headers: {
-            'Content-Type': 'application/json',
-            'X-Auth': `Bearer ${token}`
-         }
-      })
-
-      const userJson = await response.json();
-      setUser(userJson)
-   }
 
 
    return (
       <StyledRoot>
          <Header onOpenNav={() => setOpen(true)} />
 
-         <Nav openNav={open} onCloseNav={() => setOpen(false)} user={user} />
+         <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
          <Main>
             <Outlet />

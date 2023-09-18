@@ -7,19 +7,29 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ 
 
 const centralBankConfig = [
    {
-      title: 'dashboard',
-      path: '/dashboard/app',
-      icon: icon('ic_analytics'),
+      title: 'Dashboard',
+      path: '/central-bank/dashboard',
+      icon: icon('ic_analytics')
    },
    {
-      title: 'validator',
-      path: '/dashboard/user',
+      title: 'Validators',
+      path: '/central-bank/validators',
       icon: icon('ic_lock'),
    },
    {
-      title: 'RTGS',
-      path: '/dashboard/products',
+      title: 'Users',
+      path: '/central-bank/users',
       icon: icon('ic_cart'),
+   },
+   {
+      title: 'Uctivation',
+      path: '/central-bank/activation',
+      icon: icon('ic_cart'),
+   },
+   {
+      title: 'Transaction',
+      path: '/central-bank/activation',
+      icon: icon('ic_analytics'),
    },
 ];
 

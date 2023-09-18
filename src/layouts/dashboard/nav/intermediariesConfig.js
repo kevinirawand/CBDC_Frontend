@@ -7,20 +7,20 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ 
 
 const intermediariesConfig = [
    {
-      title: 'dashboard',
-      path: '/dashboard/app',
+      title: 'Home',
+      path: '/intermediaries/dashboard',
       icon: icon('ic_analytics'),
    },
    {
-      title: 'validator',
-      path: '/dashboard/user',
+      title: 'Account',
+      path: '/intermediaries/account',
       icon: icon('ic_lock'),
    },
    {
-      title: 'RTGS',
-      path: '/dashboard/products',
-      icon: icon('ic_cart'),
-   },
+      title: 'Recent Transaction',
+      path: '/intermediaries/recent-transaction',
+      icon: icon('ic_lock'),
+   }
 ];
 
 export default intermediariesConfig;
