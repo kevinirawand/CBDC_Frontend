@@ -17,8 +17,8 @@ export default function IMAccountPage() {
    const [user, setUser] = useState();
 
    const handleUser = async () => {
-      const token = sessionStorage.getItem('token')
-      const userId = sessionStorage.getItem('userId')
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('userId')
 
       const response = await fetch(`http://localhost:1337/api/v1/user/${userId}`, {
          method: 'GET',
@@ -33,7 +33,7 @@ export default function IMAccountPage() {
    }
 
    const handleRedeem = async (amount) => {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
 
       const response = await fetch(`http://localhost:1337/api/v1/transaction/redeem/request`, {
          method: 'POST',
@@ -51,7 +51,7 @@ export default function IMAccountPage() {
    }
 
    const handleExchange = async (amount) => {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
 
       const response = await fetch(`http://localhost:1337/api/v1/transaction/redeem/interbank/`, {
          method: 'POST',

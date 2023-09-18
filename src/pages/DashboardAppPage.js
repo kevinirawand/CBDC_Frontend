@@ -29,8 +29,8 @@ export default function DashboardAppPage() {
    const theme = useTheme();
 
    const handleUser = async () => {
-      const token = sessionStorage.getItem('token')
-      const userId = sessionStorage.getItem('userId')
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('userId')
 
       const response = await fetch(`http://localhost:1337/api/v1/user/${userId}`, {
          method: 'GET',

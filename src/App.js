@@ -11,7 +11,7 @@ import ScrollToTop from './components/scroll-to-top';
 
 export default function App() {
 
-   if (!sessionStorage.getItem('token')) {
+   if (!localStorage.getItem('token')) {
       <Navigate to="/auth/login" />
    }
    return (

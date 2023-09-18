@@ -48,7 +48,7 @@ export default function IMRedeemRequestList() {
    }, [])
 
    const handleTransactionList = async (page) => {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
 
       const response = await fetch(`http://localhost:1337/api/v1/transaction/interbank-redeem-request-list?page=${page}&perPage=15`, {
          method: 'GET',

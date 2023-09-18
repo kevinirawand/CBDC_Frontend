@@ -48,9 +48,9 @@ export default function LoginForm() {
             setPasswordError(response.errors.password)
          }
       } else {
-         sessionStorage.setItem('token', response.data.accessToken)
-         sessionStorage.setItem('userId', response.data.userId)
-         sessionStorage.setItem('role', response.data.role)
+         localStorage.setItem('token', response.data.accessToken)
+         localStorage.setItem('userId', response.data.userId)
+         localStorage.setItem('role', response.data.role)
 
          if (response.data.role === 'Central Bank') {
             navigate('/central-bank/dashboard');
