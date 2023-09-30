@@ -19,9 +19,16 @@ import {
    Container,
    Typography,
    IconButton,
+    TextField,
    TableContainer,
+   Box,
+   Modal,
+   Fade,
    TablePagination,
 } from '@mui/material';
+
+import { LoadingButton } from '@mui/lab';
+
 // components
 import Label from '../components/label';
 import Iconify from '../components/iconify';
@@ -39,6 +46,19 @@ const TABLE_HEAD = [
    { id: 'validators_id', label: 'Validators ID', alignRight: false },
    { id: '' },
 ];
+
+const modalStyle = {
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: 400,
+   bgcolor: 'background.paper',
+   borderRadius: '10px',
+   boxShadow: 24,
+   p: 4,
+};
+
 
 // ----------------------------------------------------------------------
 
@@ -85,6 +105,11 @@ export default function CBValidatorsList() {
    const [filterName, setFilterName] = useState('');
 
    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+
+   const [modalOpen, setModalOpen] = useState(false);
+   const handleModalOpen = () => setModalOpen(true);
+   const handleModalClose = () => setModalOpen(false);
 
    const handleOpenMenu = (event) => {
       setOpen(event.currentTarget);
@@ -146,11 +171,35 @@ export default function CBValidatorsList() {
 
    return (
       <>
+         <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={modalOpen}
+            onClose={handleModalClose}
+            closeAfterTransition
+            // slots={{ backdrop: Backdrop }}
+            slotProps={{
+               backdrop: {
+                  timeout: 500,
+               },
+            }}
+         >
+            <Fade in={modalOpen}>
+               <Box sx={modalStyle}>
+                <form onSubmit={() => {}}>
+                     <Stack spacing={3}>
+                        <TextField name="token-validator" label="Token Validator ID" onChange={() => {}} />
+                     </Stack>
+                  </form>
+               </Box>
+            </Fade>
+         </Modal>
+
          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
                Validators List
             </Typography>
-            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+            <Button onClick={handleModalOpen} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
                Set Validators
             </Button>
          </Stack>
