@@ -22,14 +22,9 @@ const centralBankConfig = [
       icon: icon('ic_cart'),
    },
    {
-      title: 'Uctivation',
+      title: 'Activation',
       path: '/central-bank/activation',
       icon: icon('ic_cart'),
-   },
-   {
-      title: 'Transaction',
-      path: '/central-bank/activation',
-      icon: icon('ic_analytics'),
    },
 ];
 

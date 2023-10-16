@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import {
    Card,
@@ -19,7 +19,8 @@ import {
    Container,
    Typography,
    IconButton,
-    TextField,
+   TextField,
+   Backdrop,
    TableContainer,
    Box,
    Modal,
@@ -93,21 +94,22 @@ function applySortFilter(array, comparator, query) {
 
 export default function CBValidatorsList() {
    const [open, setOpen] = useState(null);
-
    const [page, setPage] = useState(0);
-
    const [order, setOrder] = useState('asc');
-
    const [selected, setSelected] = useState([]);
-
    const [orderBy, setOrderBy] = useState('name');
-
    const [filterName, setFilterName] = useState('');
-
    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+   const [tokenID, setTokenID] = useState("");
+   const handleSubmit = async e => {
+         e.preventDefault();
+         handleModalClose();
+      }
 
 
    const [modalOpen, setModalOpen] = useState(false);
+   const [modalFormOpen, setModalFormOpen] = useState(false);
    const handleModalOpen = () => setModalOpen(true);
    const handleModalClose = () => setModalOpen(false);
 
@@ -169,6 +171,24 @@ export default function CBValidatorsList() {
 
    const isNotFound = !filteredUsers.length && !!filterName;
 
+
+   useEffect(() => {
+       (async () => {
+           const token = localStorage.getItem('token')
+           const response = await fetch(`http://103.13.206.208:1337/api/v1/token-validator?page=1&perPage=25`, {
+               method: 'GET',
+               headers: {
+                   'Content-Type': 'application/json',
+                   'X-Auth': `Bearer ${token}`
+               }
+           })
+
+           console.info("T::", response)
+           const json = await response.json();
+           console.info("T::", json)
+       })();
+   }, [])
+
    return (
       <>
          <Modal
@@ -177,7 +197,7 @@ export default function CBValidatorsList() {
             open={modalOpen}
             onClose={handleModalClose}
             closeAfterTransition
-            // slots={{ backdrop: Backdrop }}
+            slots={{ backdrop: Backdrop }}
             slotProps={{
                backdrop: {
                   timeout: 500,
@@ -186,10 +206,40 @@ export default function CBValidatorsList() {
          >
             <Fade in={modalOpen}>
                <Box sx={modalStyle}>
-                <form onSubmit={() => {}}>
+                <form onSubmit={handleSubmit}>
                      <Stack spacing={3}>
-                        <TextField name="token-validator" label="Token Validator ID" onChange={() => {}} />
+                        <TextField name="token-validator" label="Token Validator ID" onChange={(e) => setTokenID(e.target.value)} />
                      </Stack>
+                     <LoadingButton style={{ marginTop: '25px' }} fullWidth size="large" type="submit" variant="contained">
+                        Set
+                     </LoadingButton>
+                  </form>
+               </Box>
+            </Fade>
+         </Modal>
+
+         <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={modalFormOpen}
+            onClose={handleModalClose}
+            closeAfterTransition
+            slots={{ backdrop: Backdrop }}
+            slotProps={{
+               backdrop: {
+                  timeout: 500,
+               },
+            }}
+         >
+            <Fade in={modalFormOpen}>
+               <Box sx={modalStyle}>
+                <form onSubmit={(e) => {e.preventDefault(); setModalFormOpen(false)}}>
+                     <Stack spacing={3}>
+                        <TextField name="token-validator" label="Token Validator ID" onChange={(e) => setTokenID(e.target.value)} />
+                     </Stack>
+                     <LoadingButton style={{ marginTop: '25px' }} fullWidth size="large" type="submit" variant="contained">
+                        Delete
+                     </LoadingButton>
                   </form>
                </Box>
             </Fade>
@@ -197,7 +247,7 @@ export default function CBValidatorsList() {
 
          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-               Validators List
+               Token Validators List
             </Typography>
             <Button onClick={handleModalOpen} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
                Set Validators
@@ -249,7 +299,7 @@ export default function CBValidatorsList() {
                                  </TableCell> */}
 
                                  <TableCell align="right">
-                                    <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                                    <IconButton size="large" color="inherit" onClick={() => setModalFormOpen(true)}>
                                        <Iconify icon={'eva:more-vertical-fill'} />
                                     </IconButton>
                                  </TableCell>
