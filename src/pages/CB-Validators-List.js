@@ -300,7 +300,7 @@ export default function CBValidatorsList() {
 
                                  <TableCell align="right">
                                     <IconButton size="large" color="inherit" onClick={() => setModalFormOpen(true)}>
-                                       <Iconify icon={'eva:more-vertical-fill'} />
+                                       <Iconify icon={'eva:diagonal-arrow-right-up-fill'} />
                                     </IconButton>
                                  </TableCell>
                               </TableRow>
