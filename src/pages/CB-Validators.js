@@ -119,11 +119,6 @@ export default function CBValidatorsPage() {
                <Grid item xs={12} md={12} lg={12}>
                   <CBValidatorsList />
                </Grid>
-
-               <Grid item xs={12} md={12} lg={12}>
-                  <CBTokenValidatorsList />
-               </Grid>
-
             </Grid>
          </Container>
       </>
