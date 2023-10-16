@@ -110,6 +110,10 @@ export default function CBValidatorsList() {
 
    const [modalOpen, setModalOpen] = useState(false);
    const [modalFormOpen, setModalFormOpen] = useState(false);
+   const handleModalFormOpen = () => setModalFormOpen(true);
+   const handleModalFormClose = () => setModalFormOpen(false);
+    
+
    const handleModalOpen = () => setModalOpen(true);
    const handleModalClose = () => setModalOpen(false);
 
@@ -222,7 +226,7 @@ export default function CBValidatorsList() {
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
             open={modalFormOpen}
-            onClose={handleModalClose}
+            onClose={handleModalFormClose}
             closeAfterTransition
             slots={{ backdrop: Backdrop }}
             slotProps={{
