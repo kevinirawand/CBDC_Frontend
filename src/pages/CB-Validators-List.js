@@ -110,6 +110,12 @@ export default function CBValidatorsList() {
 
    const [modalOpen, setModalOpen] = useState(false);
    const [modalFormOpen, setModalFormOpen] = useState(false);
+   const [modalFormEditOpen, setModalFormEditOpen] = useState(false);
+
+   const handleModalFormEditOpen = () => setModalFormEditOpen(true);
+   const handleModalFormEditClose = () => setModalFormEditOpen(false);
+ 
+
    const handleModalFormOpen = () => setModalFormOpen(true);
    const handleModalFormClose = () => setModalFormOpen(false);
     
@@ -241,8 +247,35 @@ export default function CBValidatorsList() {
                      <Stack spacing={3}>
                         <TextField name="token-validator" label="Token Validator ID" onChange={(e) => setTokenID(e.target.value)} />
                      </Stack>
-                     <LoadingButton style={{ marginTop: '25px' }} fullWidth size="large" type="submit" variant="contained">
+                     <LoadingButton style={{ marginTop: '25px', backgroundColor: "#FF4842" }} fullWidth size="large" type="submit" variant="contained">
                         Delete
+                     </LoadingButton>
+                  </form>
+               </Box>
+            </Fade>
+         </Modal>
+
+         <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            open={modalFormEditOpen}
+            onClose={handleModalFormEditClose}
+            closeAfterTransition
+            slots={{ backdrop: Backdrop }}
+            slotProps={{
+               backdrop: {
+                  timeout: 500,
+               },
+            }}
+         >
+            <Fade in={modalFormEditOpen}>
+               <Box sx={modalStyle}>
+                <form onSubmit={(e) => {e.preventDefault(); setModalFormEditOpen(false)}}>
+                     <Stack spacing={3}>
+                        <TextField name="token-validator" label="Token Validator ID" onChange={(e) => setTokenID(e.target.value)} />
+                     </Stack>
+                     <LoadingButton style={{ marginTop: '25px' }} fullWidth size="large" type="submit" variant="contained">
+                        Edit
                      </LoadingButton>
                   </form>
                </Box>
@@ -303,8 +336,8 @@ export default function CBValidatorsList() {
                                  </TableCell> */}
 
                                  <TableCell align="right">
-                                    <IconButton size="large" color="inherit" onClick={() => setModalFormOpen(true)}>
-                                       <Iconify icon={'eva:diagonal-arrow-right-up-fill'} />
+                                   <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                                       <Iconify icon={'eva:more-vertical-fill'} />
                                     </IconButton>
                                  </TableCell>
                               </TableRow>
@@ -373,12 +406,12 @@ export default function CBValidatorsList() {
                },
             }}
          >
-            <MenuItem>
+            <MenuItem onClick={() => setModalFormEditOpen(true)}>
                <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
                Edit
             </MenuItem>
 
-            <MenuItem sx={{ color: 'error.main' }}>
+            <MenuItem sx={{ color: 'error.main' }} onClick={() => setModalFormOpen(true)}>
                <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
                Delete
             </MenuItem>
