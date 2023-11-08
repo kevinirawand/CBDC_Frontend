@@ -12,6 +12,16 @@ const intermediariesConfig = [
       icon: icon('ic_analytics'),
    },
    {
+      title: 'Redeem Request',
+      path: '/intermediaries/user-redeem-request',
+      icon: icon('ic_lock'),
+   },
+   {
+      title: 'Convert Request',
+      path: '/intermediaries/user-convert-request',
+      icon: icon('ic_lock'),
+   },
+   {
       title: 'Account',
       path: '/intermediaries/account',
       icon: icon('ic_lock'),

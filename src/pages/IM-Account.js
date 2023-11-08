@@ -53,7 +53,7 @@ export default function IMAccountPage() {
    const handleExchange = async (amount) => {
       const token = localStorage.getItem('token')
 
-      const response = await fetch(`http://103.13.206.208:1337/api/v1/transaction/redeem/interbank/`, {
+      const response = await fetch(`http://103.13.206.208:1337/api/v1/transaction/exchange/`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -62,9 +62,12 @@ export default function IMAccountPage() {
          body: JSON.stringify({ amount: amount })
       })
 
-      const redeemJson = await response.json();
-      handleUser()
-      return redeemJson
+      const exchangeJSON = await response.json();
+
+      if (exchangeJSON.code === 200) {
+         alert('Request Exchange to CB Success!')
+      }
+      return exchangeJSON
    }
 
    useEffect(() => {

@@ -29,17 +29,6 @@ const TABLE_HEAD = [
 ];
 
 // ----------------------------------------------------------------------
-
-function descendingComparator(a, b, orderBy) {
-   if (b[orderBy] < a[orderBy]) {
-      return -1;
-   }
-   if (b[orderBy] > a[orderBy]) {
-      return 1;
-   }
-   return 0;
-}
-
 export default function IMRecentTransactionPage() {
    const [open, setOpen] = useState(null);
 

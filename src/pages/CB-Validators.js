@@ -111,10 +111,6 @@ export default function CBValidatorsPage() {
          </Helmet>
 
          <Container maxWidth="auto">
-            <Typography variant="h4" sx={{ mb: 5 }}>
-               Validators
-            </Typography>
-
             <Grid container spacing={3}>
                <Grid item xs={12} md={12} lg={12}>
                   <CBValidatorsList />

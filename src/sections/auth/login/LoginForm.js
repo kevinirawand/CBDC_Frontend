@@ -19,8 +19,9 @@ async function loginUser(credentials) {
    });
 
    // console.info(response.json())
+   const result = await response.json();
 
-   return await response.json();
+   return result;
 }
 
 export default function LoginForm() {

@@ -19,6 +19,9 @@ import IMDashboardPage from './pages/IM-Dashboard';
 import IMRecentTransactionPage from './pages/IM-RecentTransaction';
 import IMAccountPage from './pages/IM-Account';
 import IMRedeemExchangeList from './pages/IM-ExchangeRequestList';
+import CBRedeemRequest from './pages/CB-redeem-request';
+import IMUserRedeemRequest from './pages/IM-user-redeem-request';
+import IMUserConvertRequest from './pages/IM-user-exchange-request';
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +40,6 @@ export default function Router() {
          children: [
             { path: 'dashboard', element: <CBDashboardPage />, index: true },
             { path: 'validators', element: <CBValidatorsPage /> },
-            { path: 'rtgs', element: <ProductsPage /> },
             { path: 'users', element: <CBUsersPage /> },
             { path: 'activation', element: <CBActivationPage /> }
          ],
@@ -48,7 +50,9 @@ export default function Router() {
          children: [
             { path: 'dashboard', element: <IMDashboardPage />, index: true },
             { path: 'account', element: <IMAccountPage /> },
-            { path: 'recent-transaction', element: <IMRecentTransactionPage    /> },
+            { path: 'user-redeem-request', element: <IMUserRedeemRequest /> },
+            { path: 'user-convert-request', element: <IMUserConvertRequest /> },
+            { path: 'recent-transaction', element: <IMRecentTransactionPage /> },
             { path: 'issuing', element: <ProductsPage /> },
          ],
       },
