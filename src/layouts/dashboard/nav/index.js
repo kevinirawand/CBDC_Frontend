@@ -1,18 +1,11 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-// @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
-// mock
-import account from '../../../_mock/account';
-// hooks
 import useResponsive from '../../../hooks/useResponsive';
-// components
-import Logo from '../../../components/logo';
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
-//
 import centralBankConfig from './centralBankConfig'
 import intermediariesConfig from './intermediariesConfig';
 import forbiddenConfig from './forbiddenConfig';
@@ -56,7 +49,7 @@ export default function Nav({ openNav, onCloseNav }) {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('userId')
 
-      const response = await fetch(`http://103.13.206.208:1337/api/v1/user/${userId}`, {
+      const response = await fetch(`http://localhost:1337/api/v1/user/${userId}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',
@@ -84,7 +77,7 @@ export default function Nav({ openNav, onCloseNav }) {
             <Link underline="none">
                <StyledAccount>
 
-                  <img width="50" src={`http://103.13.206.208:1337/static/images/profile/${user?.data?.profilePicture}`} alt="photoURL" />
+                  <img width="50" src={`http://localhost:1337/static/images/profile/${user?.data?.profilePicture}`} alt="photoURL" />
 
                   <Box sx={{ ml: 2 }}>
                      <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>

@@ -1,12 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-// @mui
 import { styled } from '@mui/material/styles';
-//
 import Header from './header';
-import Nav from './nav';
-
-// ----------------------------------------------------------------------
+import Nav from './nav'
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
@@ -33,12 +29,34 @@ const Main = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
+   const [user, setUser] = useState([]);
+
+   useEffect(() => {
+      handleUser()
+   }, [])
+
+   const handleUser = async () => {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('userId')
+
+      const response = await fetch(`http://localhost:1337/api/v1/user/${userId}`, {
+         method: 'GET',
+         headers: {
+            'Content-Type': 'application/json',
+            'X-Auth': `Bearer ${token}`
+         }
+      })
+
+      const userJson = await response.json();
+      setUser(userJson)
+   }
+
    const [open, setOpen] = useState(false);
 
 
    return (
       <StyledRoot>
-         <Header onOpenNav={() => setOpen(true)} />
+         <Header onOpenNav={() => setOpen(true)} user={user} />
 
          <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 

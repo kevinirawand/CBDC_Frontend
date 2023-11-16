@@ -21,7 +21,7 @@ import IMAccountPage from './pages/IM-Account';
 import IMRedeemExchangeList from './pages/IM-ExchangeRequestList';
 import CBRedeemRequest from './pages/CB-redeem-request';
 import IMUserRedeemRequest from './pages/IM-user-redeem-request';
-import IMUserConvertRequest from './pages/IM-user-exchange-request';
+import IMUserConvertRequest from './pages/IM-user-convert-request';
 
 // ----------------------------------------------------------------------
 

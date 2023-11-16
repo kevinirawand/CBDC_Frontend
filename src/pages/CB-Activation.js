@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
+import { filter } from 'lodash';
 import { useEffect, useState } from 'react';
-import { faker } from '@faker-js/faker';
-// @mui
 import {
    Card,
    Table,
@@ -15,67 +14,78 @@ import {
    MenuItem,
    TableBody,
    TableCell,
+   Container,
+   Typography,
    IconButton,
+   TextField,
+   Backdrop,
    TableContainer,
+   Box,
+   Modal,
+   Fade,
    TablePagination,
-   useTheme,
-   Grid, Container, Typography
 } from '@mui/material';
-
-import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
+import { LoadingButton } from '@mui/lab';
 import Iconify from '../components/iconify';
-// @mui
-// components
-import Label from '../components/label';
 import Scrollbar from '../components/scrollbar';
-// sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// mock
 import USERLIST from '../_mock/user';
-import CBRecentTransactionPage from './CB-RecentTransactions';
-import CBValidatorsList from './CB-Validators-List';
-import CBTokenValidatorsList from './CB-Token-Validators-List';
 
 // ----------------------------------------------------------------------
 
-export default function CBActivationPage() {
-   const TABLE_HEAD = [
-      { id: 'nama', label: 'Nama', alignRight: false },
-      { id: 'no_hp', label: 'No HP', alignRight: false },
-      { id: 'email', label: 'Email', alignRight: false },
-      { id: 'wallet_id', label: 'Wallet ID', alignRight: false },
-      { id: 'action', label: 'Action', alignRight: false }
-   ];
+const TABLE_HEAD = [
+   { id: 'name', label: 'Name', alignRight: false },
+   { id: 'phoneNumber', label: 'Phone Number', alignRight: false },
+   { id: 'email', label: 'Email', alignRight: false },
+   { id: 'role', label: 'Role', alignRight: false },
+   { id: 'action', label: 'Action', alignRight: false },
+];
 
-   // ----------------------------------------------------------------------
+const modalStyle = {
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: 400,
+   bgcolor: 'background.paper',
+   borderRadius: '10px',
+   boxShadow: 24,
+   p: 4,
+};
 
+
+// ----------------------------------------------------------------------
+
+
+export default function CBActivation() {
    const [open, setOpen] = useState(null);
-
    const [page, setPage] = useState(0);
-
-   const [order, setOrder] = useState('asc');
-
    const [selected, setSelected] = useState([]);
-
-   const [orderBy, setOrderBy] = useState('name');
-
-   const [filterName, setFilterName] = useState('');
-
    const [rowsPerPage, setRowsPerPage] = useState(5);
+   const [userActivationRequestList, setUserActivationRequestList] = useState([]);
 
-   const handleOpenMenu = (event) => {
-      setOpen(event.currentTarget);
-   };
+   const handleAcceptRequest = async (userId, isApprove) => {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`http://localhost:1337/api/v1/user/activation?userId=${userId}&isApprove=${isApprove}`, {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'X-Auth': `Bearer ${token}`
+         }
+      })
+
+      const result = await response.json()
+      console.info(result)
+      if (result.code === 200) {
+         window.alert('Redeem Request Approved')
+      } else {
+         window.alert(`Redeem Request Error ${result.errors.message}`)
+      }
+      handleGetUserActivationRequestList()
+   }
 
    const handleCloseMenu = () => {
       setOpen(null);
-   };
-
-   const handleRequestSort = (event, property) => {
-      const isAsc = orderBy === property && order === 'asc';
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(property);
    };
 
    const handleSelectAllClick = (event) => {
@@ -102,202 +112,138 @@ export default function CBActivationPage() {
       setSelected(newSelected);
    };
 
-   const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-   };
+   const handleGetUserActivationRequestList = async (page = 1, perPage = 5) => {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`http://localhost:1337/api/v1/user/activation?page=${page}&perPage=${perPage}`, {
+         method: 'GET',
+         headers: {
+            'Content-Type': 'application/json',
+            'X-Auth': `Bearer ${token}`
+         }
+      })
 
-   const handleChangeRowsPerPage = (event) => {
-      setPage(0);
-      setRowsPerPage(parseInt(event.target.value, 10));
-   };
-
-   const handleFilterByName = (event) => {
-      setPage(0);
-      setFilterName(event.target.value);
-   };
-
-   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-   const isNotFound = !filteredUsers.length && !!filterName;
-
-   function descendingComparator(a, b, orderBy) {
-      if (b[orderBy] < a[orderBy]) {
-         return -1;
-      }
-      if (b[orderBy] > a[orderBy]) {
-         return 1;
-      }
-      return 0;
+      const userActivationRequestListJson = await response.json();
+      console.info(userActivationRequestListJson)
+      setUserActivationRequestList(userActivationRequestListJson)
+      return userActivationRequestListJson;
    }
 
-   function getComparator(order, orderBy) {
-      return order === 'desc'
-         ? (a, b) => descendingComparator(a, b, orderBy)
-         : (a, b) => -descendingComparator(a, b, orderBy);
-   }
+   useEffect(() => {
+      handleGetUserActivationRequestList();
+   }, [])
 
-   function applySortFilter(array, comparator, query) {
-      const stabilizedThis = array.map((el, index) => [el, index]);
-      stabilizedThis.sort((a, b) => {
-         const order = comparator(a[0], b[0]);
-         if (order !== 0) return order;
-         return a[1] - b[1];
-      });
-      if (query) {
-         return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-      }
-      return stabilizedThis.map((el) => el[0]);
+   const emptyRows = userActivationRequestList?.data?.userActivationRequestList
+      .length == 0;
+
+   const isNotFound = userActivationRequestList?.data?.userActivationRequestList
+      .length == 0;
+
+   const dissabledPaginationStyle = {
+      filter: 'contrast(0)'
    }
 
    return (
       <>
-         <Helmet>
-            <title> Users | CBDC ITB </title>
-         </Helmet>
+         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography variant="h4" gutterBottom>
+               User Activation Request
+            </Typography>
+         </Stack>
 
-         <Container maxWidth="auto">
-            <Grid container spacing={3}>
-               <Grid item xs={12} md={12} lg={12}>
-                  <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                     <Typography variant="h4" gutterBottom>
-                        User List
-                     </Typography>
-                  </Stack>
+         <Card>
+            {/* <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} /> */}
 
-                  <Card>
-                     <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
-                     <Scrollbar>
-                        <TableContainer sx={{ minWidth: 800 }}>
-                           <Table>
-                              <UserListHead
-                                 order={order}
-                                 orderBy={orderBy}
-                                 headLabel={TABLE_HEAD}
-                                 rowCount={USERLIST.length}
-                                 numSelected={selected.length}
-                                 onRequestSort={handleRequestSort}
-                                 onSelectAllClick={handleSelectAllClick}
-                              />
-                              <TableBody>
-                                 {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                                    const selectedUser = selected.indexOf(name) !== -1;
-
-                                    return (
-                                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                                          <TableCell padding="checkbox">
-                                             <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
-                                          </TableCell>
-
-                                          <TableCell component="th" scope="row" padding="none">
-                                             <Stack direction="row" alignItems="center" spacing={2}>
-                                                <Avatar alt={name} src={avatarUrl} />
-                                                <Typography variant="subtitle2" noWrap>
-                                                   {name}
-                                                </Typography>
-                                             </Stack>
-                                          </TableCell>
-
-                                          <TableCell align="left">{company}</TableCell>
-
-                                          <TableCell align="left">{role}</TableCell>
-
-                                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                                          <TableCell style={{ display: 'flex', gap: '15px' }}>
-                                             <Button style={{ backgroundColor: '#16FF00' }} variant="contained" startIcon={<Iconify icon="fluent-mdl2:accept" />}>
-                                                Activate
-                                             </Button>
-
-                                             <Button style={{ backgroundColor: '#FE0000' }} variant="contained" startIcon={<Iconify icon="octicon:x-12" />}>
-                                                Reject
-                                             </Button>
-                                          </TableCell>
-
-                                          {/* <TableCell align="left">
-                                             <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                                          </TableCell> */}
-                                       </TableRow>
-                                    );
-                                 })}
-                                 {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                       <TableCell colSpan={6} />
-                                    </TableRow>
-                                 )}
-                              </TableBody>
-
-                              {isNotFound && (
-                                 <TableBody>
-                                    <TableRow>
-                                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                          <Paper
-                                             sx={{
-                                                textAlign: 'center',
-                                             }}
-                                          >
-                                             <Typography variant="h6" paragraph>
-                                                Not found
-                                             </Typography>
-
-                                             <Typography variant="body2">
-                                                No results found for &nbsp;
-                                                <strong>&quot;{filterName}&quot;</strong>.
-                                                <br /> Try checking for typos or using complete words.
-                                             </Typography>
-                                          </Paper>
-                                       </TableCell>
-                                    </TableRow>
-                                 </TableBody>
-                              )}
-                           </Table>
-                        </TableContainer>
-                     </Scrollbar>
-
-                     <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={USERLIST.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
+            <Scrollbar>
+               <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                     <UserListHead
+                        headLabel={TABLE_HEAD}
+                        rowCount={userActivationRequestList?.data?.userActivationRequestList.length}
+                        numSelected={selected.length}
+                        onSelectAllClick={handleSelectAllClick}
                      />
-                  </Card>
+                     <TableBody>
+                        {userActivationRequestList?.data?.userActivationRequestList.map((row) => {
+                           const { id, name, phoneNumber, email, role } = row;
+                           const selectedUser = selected.indexOf(id) !== -1;
 
-                  <Popover
-                     open={Boolean(open)}
-                     anchorEl={open}
-                     onClose={handleCloseMenu}
-                     anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                     transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                     PaperProps={{
-                        sx: {
-                           p: 1,
-                           width: 140,
-                           '& .MuiMenuItem-root': {
-                              px: 1,
-                              typography: 'body2',
-                              borderRadius: 0.75,
-                           },
-                        },
-                     }}
-                  >
-                     <MenuItem>
-                        <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-                        Edit
-                     </MenuItem>
+                           return (
+                              <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                                 <TableCell align="left">{name}</TableCell>
+                                 <TableCell align="left">{phoneNumber}</TableCell>
+                                 <TableCell align="left">{email}</TableCell>
+                                 <TableCell align="left">{role}</TableCell>
 
-                     <MenuItem sx={{ color: 'error.main' }}>
-                        <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-                        Delete
-                     </MenuItem>
-                  </Popover>
-               </Grid>
-            </Grid>
-         </Container>
+                                 <TableCell style={{ display: 'flex', gap: '15px' }}>
+                                    <Button style={{ backgroundColor: '#16FF00' }} variant="contained" startIcon={<Iconify icon="fluent-mdl2:accept" />} onClick={() => handleAcceptRequest(id, true)}>
+                                       Accept
+                                    </Button>
+
+                                    <Button style={{ backgroundColor: '#FE0000' }} variant="contained" startIcon={<Iconify icon="octicon:x-12" />} onClick={() => handleAcceptRequest(id, false)}>
+                                       Decline
+                                    </Button>
+                                 </TableCell>
+                              </TableRow>
+                           );
+                        })}
+                        {emptyRows > 0 && (
+                           <TableRow style={{ height: 53 * emptyRows }}>
+                              <TableCell colSpan={6} />
+                           </TableRow>
+                        )}
+                     </TableBody>
+
+                     {isNotFound && (
+                        <TableBody>
+                           <TableRow>
+                              <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                                 <Paper
+                                    sx={{
+                                       textAlign: 'center',
+                                    }}
+                                 >
+                                    <Typography variant="h6" paragraph>
+                                       Empty Request
+                                    </Typography>
+                                 </Paper>
+                              </TableCell>
+                           </TableRow>
+                        </TableBody>
+                     )}
+                  </Table>
+               </TableContainer>
+            </Scrollbar>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '20px', marginBottom: '20px', flexDirection: 'row', alignItems: 'flex-start', gap: '15px', marginRight: '20px' }}>
+
+               <Iconify cursor={userActivationRequestList?.data?.currentPage == 1 ? '' : 'pointer'} width={30} icon={'mingcute:left-line'} style={userActivationRequestList?.data?.currentPage == 1 ? dissabledPaginationStyle : ''} onClick={userActivationRequestList?.data?.currentPage == 1 ? '' : () => { handleGetUserActivationRequestList(userActivationRequestList?.data?.currentPage - 1) }} />
+               <Typography variant="p" gutterBottom>
+                  {userActivationRequestList?.data?.currentPage}  of  {userActivationRequestList?.data?.totalPages}
+               </Typography>
+
+               <Iconify cursor={userActivationRequestList?.data?.currentPage == userActivationRequestList?.data?.totalPages ? '' : 'pointer'} width={30} icon={'mingcute:right-line'} style={userActivationRequestList?.data?.currentPage == userActivationRequestList?.data?.totalPages ? dissabledPaginationStyle : ''} onClick={userActivationRequestList?.data?.currentPage == userActivationRequestList?.data?.totalPages ? '' : () => { handleGetUserActivationRequestList(userActivationRequestList?.data?.currentPage + 1) }} />
+            </div>
+         </Card >
+
+         <Popover
+            open={Boolean(open)}
+            anchorEl={open}
+            onClose={handleCloseMenu}
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            PaperProps={{
+               sx: {
+                  p: 1,
+                  width: 140,
+                  '& .MuiMenuItem-root': {
+                     px: 1,
+                     typography: 'body2',
+                     borderRadius: 0.75,
+                  },
+               },
+            }}
+         >
+         </Popover>
       </>
    );
 }
