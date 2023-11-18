@@ -67,7 +67,7 @@ export default function IMUserConvertRequest() {
 
    const handleAcceptRequest = async (transactionId, isApprove) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`/api/v1/transaction/convert/confirmation?transactionId=${transactionId}&isApprove=${isApprove}`, {
+      const response = await fetch(`http://localhost:1337/api/v1/transaction/convert/confirmation?transactionId=${transactionId}&isApprove=${isApprove}`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ export default function IMUserConvertRequest() {
 
    const handleGetConvertRequestList = async (page = 1, perPage = 5) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`/api/v1/transaction/convert?page=${page}&perPage=${perPage}`, {
+      const response = await fetch(`http://localhost:1337/api/v1/transaction/convert?page=${page}&perPage=${perPage}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',

@@ -39,7 +39,7 @@ export default function AccountPopover({ user }) {
 
       const token = localStorage.getItem('token')
 
-      const result = await fetch(`/api/v1/auth/logout`, {
+      const result = await fetch(`http://localhost:1337/api/v1/auth/logout`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',

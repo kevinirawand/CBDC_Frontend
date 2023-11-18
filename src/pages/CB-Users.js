@@ -82,7 +82,7 @@ export default function CBUserPage() {
 
    const handleGetUserList = async (page = 1, perPage = 5) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`/api/v1/user?page=${page}&perPage=${perPage}`, {
+      const response = await fetch(`http://localhost:1337/api/v1/user?page=${page}&perPage=${perPage}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export default function CBUserPage() {
    }
 
    async function createUser(credentials) {
-      const response = await fetch('/api/v1/auth/register', {
+      const response = await fetch('http://localhost:1337/api/v1/auth/register', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json'
