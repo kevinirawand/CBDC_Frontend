@@ -85,7 +85,7 @@ export default function CBUserPage() {
 
    const handleGetIntermediariesList = async (page = 1, perPage = 5) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`http://localhost:1337/api/v1/user/?page=${page}&perPage=${perPage}&role=IntermediariesALL`, {
+      const response = await fetch(`/api/v1/user/?page=${page}&perPage=${perPage}&role=IntermediariesALL`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export default function CBUserPage() {
 
    const handleGetValidatorList = async (page = 1, perPage = 5) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`http://localhost:1337/api/v1/user/validators?page=${page}&perPage=${perPage}`, {
+      const response = await fetch(`/api/v1/user/validators?page=${page}&perPage=${perPage}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ export default function CBUserPage() {
    async function setValidator() {
       const token = localStorage.getItem('token')
 
-      const response = await fetch(`http://localhost:1337/api/v1/user/validators/${intermediariesUser}`, {
+      const response = await fetch(`/api/v1/user/validators/${intermediariesUser}`, {
          method: 'PUT',
          headers: {
             'Content-Type': 'application/json',

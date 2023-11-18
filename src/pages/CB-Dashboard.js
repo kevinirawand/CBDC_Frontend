@@ -32,7 +32,7 @@ export default function CBDashboardPage() {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('userId')
 
-      const response = await fetch(`http://localhost:1337/api/v1/user/${userId}`, {
+      const response = await fetch(`/api/v1/user/${userId}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',

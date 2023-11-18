@@ -39,7 +39,7 @@ export default function AccountPopover({ user }) {
 
       const token = localStorage.getItem('token')
 
-      const result = await fetch(`http://localhost:1337/api/v1/auth/logout`, {
+      const result = await fetch(`/api/v1/auth/logout`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export default function AccountPopover({ user }) {
                }),
             }}
          >
-            <Avatar src={`http://localhost:1337/static/images/profile/${user?.data?.profilePicture}`} alt="photoURL" />
+            <Avatar src={`/static/images/profile/${user?.data?.profilePicture}`} alt="photoURL" />
          </IconButton>
 
          <Popover
