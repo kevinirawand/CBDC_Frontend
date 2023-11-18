@@ -66,7 +66,7 @@ export default function CBActivation() {
 
    const handleAcceptRequest = async (userId, isApprove) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`http://localhost:1337/api/v1/user/activation?userId=${userId}&isApprove=${isApprove}`, {
+      const response = await fetch(`http://103.13.206.208:1337/api/v1/user/activation?userId=${userId}&isApprove=${isApprove}`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ export default function CBActivation() {
 
    const handleGetUserActivationRequestList = async (page = 1, perPage = 5) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`http://localhost:1337/api/v1/user/activation?page=${page}&perPage=${perPage}`, {
+      const response = await fetch(`http://103.13.206.208:1337/api/v1/user/activation?page=${page}&perPage=${perPage}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',

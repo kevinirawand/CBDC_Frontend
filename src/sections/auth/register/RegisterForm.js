@@ -7,7 +7,7 @@ import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 async function registerUser(credentials) {
-   const response = await fetch('http://localhost:1337/api/v1/auth/register', {
+   const response = await fetch('http://103.13.206.208:1337/api/v1/auth/register', {
       method: 'POST',
       headers: {
          'Content-Type': 'application/json'
