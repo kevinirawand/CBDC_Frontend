@@ -77,7 +77,7 @@ export default function Nav({ openNav, onCloseNav }) {
             <Link underline="none">
                <StyledAccount>
 
-                  <img width="50" src={`/static/images/profile/${user?.data?.profilePicture}`} alt="photoURL" />
+                  <img width="50" src={`http://103.13.206.208:1337/static/images/profile/${user?.data?.profilePicture}`} alt="photoURL" />
 
                   <Box sx={{ ml: 2 }}>
                      <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
@@ -92,7 +92,7 @@ export default function Nav({ openNav, onCloseNav }) {
             </Link>
          </Box>
 
-         <NavSection data={user?.data?.role === 'Intermediaries' ? intermediariesConfig : user?.data?.role === 'Central Bank' ? centralBankConfig : forbiddenConfig} />
+         <NavSection data={user?.data?.role === 'Intermediaries' || user?.data?.role === 'Merchant' ? intermediariesConfig : user?.data?.role === 'Central Bank' ? centralBankConfig : forbiddenConfig} />
          {/* <NavSection data={intermediariesConfig} /> */}
 
       </Scrollbar>

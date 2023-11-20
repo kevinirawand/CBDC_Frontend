@@ -22,6 +22,11 @@ const centralBankConfig = [
       icon: icon('ic_cart'),
    },
    {
+      title: 'Issuing',
+      path: '/central-bank/issuing',
+      icon: icon('ic_cart'),
+   },
+   {
       title: 'Activation',
       path: '/central-bank/activation',
       icon: icon('ic_cart'),

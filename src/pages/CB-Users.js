@@ -191,7 +191,6 @@ export default function CBUserPage() {
             setPasswordConfirmationError(response.errors.passwordConfirmation)
          }
 
-         console.info(response.errors)
          window.alert(`Error: ${response.errors.messages.toString()}`)
 
       } else {
@@ -247,7 +246,7 @@ export default function CBUserPage() {
                               onChange={handleRole}
                            >
                               <MenuItem value={'Intermediaries'}>Intermediaries</MenuItem>
-                              <MenuItem value={'User'}>User</MenuItem>
+                              <MenuItem value={'Merchant'}>Merchant</MenuItem>
                            </Select>
                         </Stack>
 
@@ -328,7 +327,7 @@ export default function CBUserPage() {
                               <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                                  <TableCell component="th" scope="row" padding="none">
                                     <Stack direction="row" alignItems="center" spacing={2}>
-                                       <Avatar alt={name} src={`/static/images/profile/${profilePicture}`} />
+                                       <Avatar alt={name} src={`http://103.13.206.208:1337/static/images/profile/${profilePicture}`} />
                                        <Typography variant="subtitle2" noWrap>
                                           {name}
                                        </Typography>

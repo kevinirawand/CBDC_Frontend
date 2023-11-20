@@ -22,6 +22,7 @@ import IMRedeemExchangeList from './pages/IM-ExchangeRequestList';
 import CBRedeemRequest from './pages/CB-redeem-request';
 import IMUserRedeemRequest from './pages/IM-user-redeem-request';
 import IMUserConvertRequest from './pages/IM-user-convert-request';
+import CBIssuing from './pages/CB-Issuing';
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +42,8 @@ export default function Router() {
             { path: 'dashboard', element: <CBDashboardPage />, index: true },
             { path: 'validators', element: <CBValidatorsPage /> },
             { path: 'users', element: <CBUsersPage /> },
-            { path: 'activation', element: <CBActivationPage /> }
+            { path: 'activation', element: <CBActivationPage /> },
+            { path: 'issuing', element: <CBIssuing /> }
          ],
       },
       {

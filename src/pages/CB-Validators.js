@@ -248,7 +248,7 @@ export default function CBUserPage() {
 
                                  <TableCell align="left">{name}</TableCell>
                                  <TableCell align="left">{phoneNumber}</TableCell>
-                                 <TableCell align="left">{'false'}</TableCell>
+                                 {/* <TableCell align="left">{'false'}</TableCell> */}
                                  <TableCell align="left">{email}</TableCell>
                                  <TableCell align="left">{validatorToken}</TableCell>
                               </TableRow>

@@ -55,7 +55,7 @@ export default function LoginForm() {
 
          if (response.data.role === 'Central Bank') {
             navigate('/central-bank/dashboard');
-         } else if (response.data.role === 'Intermediaries') {
+         } else if (response.data.role === 'Intermediaries' || response.data.role === 'Merchant') {
             navigate('/intermediaries/dashboard');
          } else {
             navigate('/404');

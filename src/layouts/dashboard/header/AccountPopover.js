@@ -75,7 +75,7 @@ export default function AccountPopover({ user }) {
                }),
             }}
          >
-            <Avatar src={`/static/images/profile/${user?.data?.profilePicture}`} alt="photoURL" />
+            <Avatar src={`http://103.13.206.208:1337/static/images/profile/${user?.data?.profilePicture}`} alt="photoURL" />
          </IconButton>
 
          <Popover
