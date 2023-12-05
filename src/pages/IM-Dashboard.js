@@ -34,7 +34,7 @@ export default function IMDashboardPage() {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('userId')
 
-      const response = await fetch(`http://103.13.206.208:1337/api/v1/user/${userId}`, {
+      const response = await fetch(`http://localhost:1337/api/v1/user/${userId}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',

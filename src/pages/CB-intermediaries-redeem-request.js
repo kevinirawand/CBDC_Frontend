@@ -32,18 +32,6 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-   { id: 'id', label: 'Transaction ID', alignRight: false },
-   { id: 'phoneNumberSender', label: 'Sender Phone Number', alignRight: false },
-   { id: 'phoneNumberReceiver', label: 'Receiver Phone Number', alignRight: false },
-   { id: 'event', label: 'Event', alignRight: false },
-   { id: 'amount', label: 'Amount', alignRight: false },
-   { id: 'status', label: 'Status', alignRight: false },
-   { id: 'createdAt', label: 'Request at', alignRight: false },
-   { id: 'action', label: 'Action', alignRight: false },
-];
-
 const modalStyle = {
    position: 'absolute',
    top: '50%',
@@ -60,14 +48,16 @@ const modalStyle = {
 // ----------------------------------------------------------------------
 
 
-export default function IMUserConvertRequest() {
+export default function CBIntermediariesRedeemRequest() {
    const [open, setOpen] = useState(null);
+   const [page, setPage] = useState(0);
    const [selected, setSelected] = useState([]);
-   const [convertRequest, setConvertRequest] = useState([]);
+   const [rowsPerPage, setRowsPerPage] = useState(5);
+   const [redeemRequest, setRedeemRequest] = useState([]);
 
    const handleAcceptRequest = async (transactionId, isApprove) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`http://localhost:1337/api/v1/transaction/convert/confirmation?transactionId=${transactionId}&isApprove=${isApprove}`, {
+      const response = await fetch(`http://localhost:1337/api/v1/transaction/redeem/intermediaries-confirmation?transactionId=${transactionId}&isApprove=${isApprove}`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -76,13 +66,13 @@ export default function IMUserConvertRequest() {
       })
 
       const result = await response.json()
-
+      console.info(result)
       if (result.code === 200) {
-         window.alert('Convert Request Approved')
+         window.alert('Redeem Request Approved')
       } else {
-         window.alert(`Convert Request Error ${result.errors.message}`)
+         window.alert(`Redeem Request Error ${result.errors.message}`)
       }
-      handleGetConvertRequestList()
+      handleGetRedeemRequestList()
    }
 
    const handleCloseMenu = () => {
@@ -98,24 +88,9 @@ export default function IMUserConvertRequest() {
       setSelected([]);
    };
 
-   const handleClick = (event, name) => {
-      const selectedIndex = selected.indexOf(name);
-      let newSelected = [];
-      if (selectedIndex === -1) {
-         newSelected = newSelected.concat(selected, name);
-      } else if (selectedIndex === 0) {
-         newSelected = newSelected.concat(selected.slice(1));
-      } else if (selectedIndex === selected.length - 1) {
-         newSelected = newSelected.concat(selected.slice(0, -1));
-      } else if (selectedIndex > 0) {
-         newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-      }
-      setSelected(newSelected);
-   };
-
-   const handleGetConvertRequestList = async (page = 1, perPage = 5) => {
+   const handleGetRedeemRequestList = async (page = 1, perPage = 5) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`http://localhost:1337/api/v1/transaction/convert?page=${page}&perPage=${perPage}`, {
+      const response = await fetch(`http://localhost:1337/api/v1/transaction/redeem/intermediaries?page=${page}&perPage=${perPage}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',
@@ -123,31 +98,38 @@ export default function IMUserConvertRequest() {
          }
       })
 
-
-      const convertRequestListJson = await response.json();
-      setConvertRequest(convertRequestListJson)
-      return convertRequestListJson;
+      const redeemRequestListJson = await response.json();
+      setRedeemRequest(redeemRequestListJson)
+      return redeemRequestListJson;
    }
 
    useEffect(() => {
-      handleGetConvertRequestList();
+      handleGetRedeemRequestList();
    }, [])
 
-   const emptyRows = convertRequest?.data?.convertRequestList
+   const emptyRows = redeemRequest?.data?.redeemRequestList
       .length == 0;
 
-   const isNotFound = convertRequest?.data?.convertRequestList
+   const isNotFound = redeemRequest?.data?.redeemRequestList
       .length == 0;
 
    const dissabledPaginationStyle = {
       filter: 'contrast(0)'
    }
 
+   const TABLE_HEAD = [
+      { id: 'id', label: 'Transaction ID', alignRight: false },
+      { id: 'intermediaries_id', label: 'Intermediaries ID', alignRight: false },
+      { id: 'amount', label: 'Amount', alignRight: false },
+      { id: 'createdAt', label: 'Request at', alignRight: false },
+      { id: 'action', label: 'Action', alignRight: false },
+   ];
+
    return (
       <>
          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography variant="h4" gutterBottom>
-               User Convert Request
+               Intermediaries Redeem Request
             </Typography>
          </Stack>
 
@@ -159,25 +141,21 @@ export default function IMUserConvertRequest() {
                   <Table>
                      <UserListHead
                         headLabel={TABLE_HEAD}
-                        rowCount={convertRequest?.data?.convertRequestList.length}
+                        rowCount={redeemRequest?.data?.redeemRequestList.length}
                         numSelected={selected.length}
                         onSelectAllClick={handleSelectAllClick}
                      />
                      <TableBody>
-                        {convertRequest?.data?.convertRequestList.map((row) => {
-                           const { id, phoneNumberSender, phoneNumberReceiver, event, amount, status, createdAt } = row;
+                        {redeemRequest?.data?.redeemRequestList.map((row) => {
+                           const { id, userId, amount, createdAt } = row;
                            const selectedUser = selected.indexOf(id) !== -1;
 
                            return (
                               <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                                  <TableCell align="left">{id}</TableCell>
 
-                                 <TableCell align="left">{phoneNumberSender}</TableCell>
-
-                                 <TableCell align="left">{phoneNumberReceiver}</TableCell>
-                                 <TableCell align="left">{event}</TableCell>
+                                 <TableCell align="left">{userId}</TableCell>
                                  <TableCell align="left">{amount}</TableCell>
-                                 <TableCell align="left">{status}</TableCell>
                                  <TableCell align="left">{createdAt}</TableCell>
 
                                  <TableCell style={{ display: 'flex', gap: '15px' }}>
@@ -222,12 +200,12 @@ export default function IMUserConvertRequest() {
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '20px', marginBottom: '20px', flexDirection: 'row', alignItems: 'flex-start', gap: '15px', marginRight: '20px' }}>
 
-               <Iconify cursor={convertRequest?.data?.currentPage == 1 ? '' : 'pointer'} width={30} icon={'mingcute:left-line'} style={convertRequest?.data?.currentPage == 1 ? dissabledPaginationStyle : ''} onClick={convertRequest?.data?.currentPage == 1 ? '' : () => { handleGetConvertRequestList(convertRequest?.data?.currentPage - 1) }} />
+               <Iconify cursor={redeemRequest?.data?.currentPage == 1 ? '' : 'pointer'} width={30} icon={'mingcute:left-line'} style={redeemRequest?.data?.currentPage == 1 ? dissabledPaginationStyle : ''} onClick={redeemRequest?.data?.currentPage == 1 ? '' : () => { handleGetRedeemRequestList(redeemRequest?.data?.currentPage - 1) }} />
                <Typography variant="p" gutterBottom>
-                  {convertRequest?.data?.currentPage}  of  {convertRequest?.data?.totalPages}
+                  {redeemRequest?.data?.currentPage}  of  {redeemRequest?.data?.totalPages}
                </Typography>
 
-               <Iconify cursor={convertRequest?.data?.currentPage == convertRequest?.data?.totalPages ? '' : 'pointer'} width={30} icon={'mingcute:right-line'} style={convertRequest?.data?.currentPage == convertRequest?.data?.totalPages ? dissabledPaginationStyle : ''} onClick={convertRequest?.data?.currentPage == convertRequest?.data?.totalPages ? '' : () => { handleGetConvertRequestList(convertRequest?.data?.currentPage + 1) }} />
+               <Iconify cursor={redeemRequest?.data?.currentPage == redeemRequest?.data?.totalPages ? '' : 'pointer'} width={30} icon={'mingcute:right-line'} style={redeemRequest?.data?.currentPage == redeemRequest?.data?.totalPages ? dissabledPaginationStyle : ''} onClick={redeemRequest?.data?.currentPage == redeemRequest?.data?.totalPages ? '' : () => { handleGetRedeemRequestList(redeemRequest?.data?.currentPage + 1) }} />
             </div>
          </Card >
 

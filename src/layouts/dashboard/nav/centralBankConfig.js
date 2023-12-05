@@ -27,6 +27,16 @@ const centralBankConfig = [
       icon: icon('ic_cart'),
    },
    {
+      title: 'Redeem Request',
+      path: '/central-bank/redeem-request',
+      icon: icon('ic_cart'),
+   },
+   {
+      title: 'Exchange Request',
+      path: '/central-bank/exchange-request',
+      icon: icon('ic_cart'),
+   },
+   {
       title: 'Activation',
       path: '/central-bank/activation',
       icon: icon('ic_cart'),

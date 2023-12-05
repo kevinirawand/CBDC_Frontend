@@ -20,7 +20,7 @@ export default function IMAccountPage() {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('userId')
 
-      const response = await fetch(`http://103.13.206.208:1337/api/v1/user/${userId}`, {
+      const response = await fetch(`http://localhost:1337/api/v1/user/${userId}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export default function IMAccountPage() {
    const handleRedeem = async (amount) => {
       const token = localStorage.getItem('token')
 
-      const response = await fetch(`http://103.13.206.208:1337/api/v1/transaction/redeem/request`, {
+      const response = await fetch(`http://localhost:1337/api/v1/transaction/redeem`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -44,8 +44,14 @@ export default function IMAccountPage() {
          body: JSON.stringify({ amount: amount })
       })
 
-      const redeemJson = await response.json();
-      console.info(redeemJson)
+      const redeemJSON = await response.json();
+
+      // console.info(redeemJson)
+      if (redeemJSON.code === 200) {
+         window.alert('Request Redeem to CB Success!')
+      } else {
+         window.alert(`Request Redeem to CB Error, ${redeemJSON.errors.message}`)
+      }
       handleUser()
       return redeemJson
    }
@@ -53,7 +59,7 @@ export default function IMAccountPage() {
    const handleExchange = async (amount) => {
       const token = localStorage.getItem('token')
 
-      const response = await fetch(`http://103.13.206.208:1337/api/v1/transaction/exchange/`, {
+      const response = await fetch(`http://localhost:1337/api/v1/transaction/exchange/`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -70,7 +76,7 @@ export default function IMAccountPage() {
       } else {
          window.alert(`Request Exchange to CB Error, ${exchangeJSON.errors.message}`)
       }
-      return exchangeJSON
+      return exchangeJSON;
    }
 
    useEffect(() => {

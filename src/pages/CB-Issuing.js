@@ -20,7 +20,7 @@ export default function CBIssuing() {
       console.info(amount)
       const token = localStorage.getItem('token')
 
-      const response = await fetch(`http://103.13.206.208:1337/api/v1/transaction/issuing`, {
+      const response = await fetch(`http://localhost:1337/api/v1/transaction/issuing`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export default function CBIssuing() {
    const handleGetCBDC = async () => {
       const token = localStorage.getItem('token')
 
-      const response = await fetch(`http://103.13.206.208:1337/api/v1/transaction/issuing`, {
+      const response = await fetch(`http://localhost:1337/api/v1/transaction/issuing`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',

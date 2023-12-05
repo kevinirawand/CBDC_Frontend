@@ -23,6 +23,8 @@ import CBRedeemRequest from './pages/CB-redeem-request';
 import IMUserRedeemRequest from './pages/IM-user-redeem-request';
 import IMUserConvertRequest from './pages/IM-user-convert-request';
 import CBIssuing from './pages/CB-Issuing';
+import CBIntermediariesRedeemRequest from './pages/CB-intermediaries-redeem-request';
+import CBIntermediariesExchangeRequest from './pages/CB-intermediaries-exchange-request';
 
 // ----------------------------------------------------------------------
 
@@ -43,7 +45,9 @@ export default function Router() {
             { path: 'validators', element: <CBValidatorsPage /> },
             { path: 'users', element: <CBUsersPage /> },
             { path: 'activation', element: <CBActivationPage /> },
-            { path: 'issuing', element: <CBIssuing /> }
+            { path: 'issuing', element: <CBIssuing /> },
+            { path: 'redeem-request', element: <CBIntermediariesRedeemRequest /> },
+            { path: 'exchange-request', element: <CBIntermediariesExchangeRequest /> }
          ],
       },
       {
