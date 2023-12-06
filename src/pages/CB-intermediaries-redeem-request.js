@@ -57,7 +57,7 @@ export default function CBIntermediariesRedeemRequest() {
 
    const handleAcceptRequest = async (transactionId, isApprove) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`http://localhost:1337/api/v1/transaction/redeem/intermediaries-confirmation?transactionId=${transactionId}&isApprove=${isApprove}`, {
+      const response = await fetch(`http://103.13.206.208:1337/api/v1/transaction/redeem/intermediaries-confirmation?transactionId=${transactionId}&isApprove=${isApprove}`, {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ export default function CBIntermediariesRedeemRequest() {
 
    const handleGetRedeemRequestList = async (page = 1, perPage = 5) => {
       const token = localStorage.getItem('token')
-      const response = await fetch(`http://localhost:1337/api/v1/transaction/redeem/intermediaries?page=${page}&perPage=${perPage}`, {
+      const response = await fetch(`http://103.13.206.208:1337/api/v1/transaction/redeem/intermediaries?page=${page}&perPage=${perPage}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',

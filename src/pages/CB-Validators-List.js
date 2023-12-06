@@ -185,7 +185,7 @@ export default function CBValidatorsList() {
    useEffect(() => {
       (async () => {
          const token = localStorage.getItem('token')
-         const response = await fetch(`http://localhost:1337/api/v1/token-validator?page=1&perPage=25`, {
+         const response = await fetch(`http://103.13.206.208:1337/api/v1/token-validator?page=1&perPage=25`, {
             method: 'GET',
             headers: {
                'Content-Type': 'application/json',
