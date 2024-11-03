@@ -65,7 +65,7 @@ export default function IMTopTransaction() {
    const handleUser = async () => {
       const token = localStorage.getItem('token')
 
-      const response = await fetch(`http://103.187.147.82:1337/api/v1/transaction/interbank-top-history`, {
+      const response = await fetch(`http://157.10.252.215:1337/api/v1/transaction/interbank-top-history`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',

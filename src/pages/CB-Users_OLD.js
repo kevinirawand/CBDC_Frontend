@@ -170,7 +170,7 @@ export default function CBUsersPage() {
 
    async function createUser(credentials) {
       console.info(credentials)
-      const response = await fetch('http://103.187.147.82:1337/api/v1/auth/register', {
+      const response = await fetch('http://157.10.252.215:1337/api/v1/auth/register', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json'
