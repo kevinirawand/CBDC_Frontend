@@ -53,7 +53,7 @@ export default function IMRecentTransactionPage() {
    const handleTransactionList = async (page) => {
       const token = localStorage.getItem('token')
 
-      const response = await fetch(`http://157.10.252.215:1337/api/v1/transaction/interbank-history/?page=${page}&perPage=10`, {
+      const response = await fetch(`http://103.117.57.225:1337/api/v1/transaction/interbank-history/?page=${page}&perPage=10`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',

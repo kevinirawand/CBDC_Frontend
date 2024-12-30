@@ -39,7 +39,7 @@ export default function DashboardLayout() {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('userId')
 
-      const response = await fetch(`http://157.10.252.215:1337/api/v1/user/${userId}`, {
+      const response = await fetch(`http://103.117.57.225:1337/api/v1/user/${userId}`, {
          method: 'GET',
          headers: {
             'Content-Type': 'application/json',

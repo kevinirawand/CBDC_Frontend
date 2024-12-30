@@ -7,7 +7,7 @@ import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 async function loginUser(credentials) {
-   const response = await fetch('http://157.10.252.215:1337/api/v1/auth/login', {
+   const response = await fetch('http://103.117.57.225:1337/api/v1/auth/login', {
       method: 'POST',
       headers: {
          'Content-Type': 'application/json'
